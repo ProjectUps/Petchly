@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Testimonials from '../components/sections/Testimonials';
 
 function Home() {
   const services = [
@@ -76,6 +77,8 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <Testimonials />
 
       {/* CTA Section */}
       <section className="bg-blue-600 text-white py-16">
