@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { bookingService } from '../../services/api';
 import BookingConfirmation from './BookingConfirmation';
 
 function BookingForm({ service, onClose }) {
@@ -8,21 +9,42 @@ function BookingForm({ service, onClose }) {
     serviceOption: '',
     date: '',
     time: '',
-    notes: ''
+    notes: '',
+    serviceId: service.id
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [bookingResult, setBookingResult] = useState(null);
 
   const timeSlots = [
     "09:00", "10:00", "11:00", "12:00", 
     "13:00", "14:00", "15:00", "16:00"
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here we'll add API call to save booking
-    console.log('Booking submitted:', formData);
-    setShowConfirmation(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Format date to match backend expectations
+      const formattedData = {
+        ...formData,
+        date: new Date(formData.date).toISOString()
+      };
+
+      const result = await bookingService.createBooking(formattedData);
+      console.log('Booking created:', result); // To verify the response
+      setBookingResult(result);
+      setShowConfirmation(true);
+    } catch (err) {
+      setError('Failed to create booking. Please try again.');
+      console.error('Booking error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
