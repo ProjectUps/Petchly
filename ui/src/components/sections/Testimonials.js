@@ -1,4 +1,4 @@
-function Testimonials() {
+ 
     const testimonials = [
       {
         id: 1,
