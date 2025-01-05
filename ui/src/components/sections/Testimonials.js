@@ -63,6 +63,6 @@
         </div>
       </section>
     );
-  }
+  
   
   export default Testimonials;
