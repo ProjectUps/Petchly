@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BookingForm from '../components/forms/BookingForm';
 
 function Services() {
   const [selectedService, setSelectedService] = useState(null);
@@ -77,18 +78,25 @@ function Services() {
         </div>
       </div>
 
-      {/* Booking Modal - We'll implement this next */}
+      {/* Booking Modal */}
       {selectedService && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4">Book {selectedService.name}</h2>
-            {/* We'll add the booking form here */}
-            <button
-              onClick={() => setSelectedService(null)}
-              className="mt-4 bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300"
-            >
-              Close
-            </button>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">Book {selectedService.name}</h2>
+              <button 
+                onClick={() => setSelectedService(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <BookingForm 
+              service={selectedService} 
+              onClose={() => setSelectedService(null)} 
+            />
           </div>
         </div>
       )}
