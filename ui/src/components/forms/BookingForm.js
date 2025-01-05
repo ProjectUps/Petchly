@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BookingConfirmation from './BookingConfirmation';
 
 function BookingForm({ service, onClose }) {
   const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ function BookingForm({ service, onClose }) {
     notes: ''
   });
 
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
   const timeSlots = [
     "09:00", "10:00", "11:00", "12:00", 
     "13:00", "14:00", "15:00", "16:00"
@@ -19,7 +22,7 @@ function BookingForm({ service, onClose }) {
     e.preventDefault();
     // Here we'll add API call to save booking
     console.log('Booking submitted:', formData);
-    onClose();
+    setShowConfirmation(true);
   };
 
   const handleChange = (e) => {
@@ -29,6 +32,10 @@ function BookingForm({ service, onClose }) {
       [name]: value
     }));
   };
+
+  if (showConfirmation) {
+    return <BookingConfirmation booking={formData} onClose={onClose} />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
