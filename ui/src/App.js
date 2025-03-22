@@ -1,28 +1,20 @@
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import Home from './pages/Home';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import Services from './pages/Services';
-import ChatBot from './components/ChatBot';
+import Home from './pages/Home';
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1">
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/test" element={<div className="p-4">Test Route</div>} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/shop" element={<div className="p-4">Shop Page</div>} />
-          <Route path="/virtual-vet" element={<div className="p-4">Virtual Vet Page</div>} />
-          <Route path="/login" element={<div className="p-4">Login Page</div>} />
-          <Route path="/register" element={<div className="p-4">Register Page</div>} />
+          <Route path="/book" element={<Services />} />
         </Routes>
-      </main>
-      <Footer />
-      <ChatBot />
-    </div>
+      </div>
+    </Router>
   );
 }
 
