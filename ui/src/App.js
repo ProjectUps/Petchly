@@ -10,6 +10,7 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import ChatBot from './components/ChatBot';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PetHotel from './pages/PetHotel';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,15 +23,20 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
+      <div className="min-h-screen bg-gray-50">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/hotel" element={<PetHotel />} />
+          <Route path="/book" element={
+            <Services 
+              onBookService={handleBooking}
+              showBookingForm={true}
+            />
+          } />
           <Route 
             path="/services" 
-            element={
-              <Services onBookService={handleBooking} />
-            } 
+            element={<Services onBookService={handleBooking} />}
           />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

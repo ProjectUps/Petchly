@@ -14,7 +14,7 @@ function Home() {
     {
       title: "Luxury Pet Hotel",
       description: "Comfortable stays with 24/7 care and premium amenities",
-      image: "https://images.pexels.com/photos/5731866/pexels-photo-5731866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      image: "https://unsplash.com/photos/brown-dog-lying-on-bed-with-bottle-of-s-pellegrino-sparkling-water-ey5s8rNHG-c",
       link: "/hotel",
       icon: <FaHotel className="text-white" />
     },
