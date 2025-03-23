@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Services from './pages/Services';
 import Home from './pages/Home';
+import ChatBot from './components/ChatBot';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -13,6 +16,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/book" element={<Services />} />
         </Routes>
+        <ToastContainer position="top-right" autoClose={3000} />
+        <ChatBot />
       </div>
     </Router>
   );

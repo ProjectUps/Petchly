@@ -20,7 +20,7 @@ const validationSchema = Yup.object({
     .email('Invalid email address')
     .required('Email is required'),
   phone: Yup.string()
-    .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
+    .matches(/^[89]\d{7}$/, 'Phone number must be 8 digits and start with 8 or 9')
     .required('Phone number is required'),
   notes: Yup.string()
     .max(500, 'Notes cannot exceed 500 characters')
@@ -40,31 +40,37 @@ function BookingModal({ service, onClose }) {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch('http://localhost:3000/api/bookings', {
+      console.log('Submitting booking:', values); // Debug log
+
+      const bookingData = {
+        ...values,
+        serviceName: service.name,
+        serviceId: service.id,
+        price: service.price,
+        status: 'pending'
+      };
+
+      const response = await fetch('http://localhost:5001/api/bookings', { // Make sure port is 5001
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...values,
-          serviceName: service.name,
-          serviceId: service.id,
-          price: service.price,
-          status: 'pending'
-        }),
+        body: JSON.stringify(bookingData),
       });
 
       const data = await response.json();
+      console.log('Server response:', data); // Debug log
 
       if (response.ok) {
         toast.success('Booking submitted successfully!');
         onClose();
       } else {
+        console.error('Server error:', data);
         toast.error(data.message || 'Failed to submit booking');
       }
     } catch (error) {
+      console.error('Error details:', error);
       toast.error('An error occurred. Please try again.');
-      console.error('Error:', error);
     } finally {
       setSubmitting(false);
     }
@@ -153,8 +159,12 @@ function BookingModal({ service, onClose }) {
                 <label className="block text-gray-700 mb-2">Phone</label>
                 <Field
                   name="phone"
+                  type="tel"
+                  placeholder="81234567"
+                  maxLength="8"
                   className="w-full p-2 border rounded-lg"
                 />
+                <div className="text-gray-500 text-xs mt-1">Enter 8 digits starting with 8 or 9</div>
                 <ErrorMessage
                   name="phone"
                   component="div"

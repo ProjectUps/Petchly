@@ -6,19 +6,50 @@ const Booking = require('../models/Booking');
 router.post('/', async (req, res) => {
   try {
     console.log('📝 Received booking data:', req.body);
+
+    // Validate required fields
+    const requiredFields = ['petName', 'petType', 'ownerName', 'email', 'phone', 'serviceId', 'serviceName', 'date', 'time'];
+    const missingFields = requiredFields.filter(field => !req.body[field]);
     
-    const booking = new Booking({
-      ...req.body,
-      referenceNumber: 'BK-' + Math.random().toString(36).substr(2, 9).toUpperCase()
-    });
-    
+    if (missingFields.length > 0) {
+      console.log('❌ Missing fields:', missingFields);
+      return res.status(400).json({
+        success: false,
+        message: `Missing required fields: ${missingFields.join(', ')}`
+      });
+    }
+
+    // Create booking
+    const booking = new Booking(req.body);
+    console.log('📋 Attempting to save booking:', booking);
+
+    // Save booking
     const savedBooking = await booking.save();
-    console.log('✅ Booking saved:', savedBooking);
-    
-    res.status(201).json(savedBooking);
+    console.log('✅ Booking saved successfully:', savedBooking);
+
+    res.status(201).json({
+      success: true,
+      message: 'Booking created successfully',
+      booking: savedBooking
+    });
+
   } catch (error) {
-    console.error('❌ Error saving booking:', error);
-    res.status(400).json({ message: error.message });
+    console.error('❌ Server Error:', error);
+    
+    if (error.name === 'ValidationError') {
+      console.log('❌ Validation Error:', error.errors);
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: Object.values(error.errors).map(err => err.message)
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while creating the booking',
+      error: error.message
+    });
   }
 });
 
