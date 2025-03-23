@@ -1,0 +1,57 @@
+/* Main chat button */
+.rsc-float-button {
+    background-color: #2A3342 !important;
+    border: none !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Chat container */
+.rsc-container {
+    background-color: #FDF8F4 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Bot messages */
+.rsc-ts-bot {
+    background-color: #2A3342 !important;
+    color: white !important;
+}
+
+/* User messages */
+.rsc-ts-user {
+    background-color: #1F2937 !important;
+    color: white !important;
+}
+
+/* Chat header */
+.rsc-header {
+    background-color: #2A3342 !important;
+    color: white !important;
+}
+
+/* Chat buttons/options */
+.rsc-button {
+    background-color: #2A3342 !important;
+    color: white !important;
+}
+
+.rsc-button:hover {
+    background-color: #1F2937 !important;
+}
+
+/* Chat input */
+.rsc-input {
+    border-color: #2A3342 !important;
+}
+
+/* Submit button */
+.rsc-submit-button {
+    background-color: #2A3342 !important;
+    color: white !important;
+}
+
+/* Chat icon */
+.rsc-icon {
+    fill: white !important;
+} 

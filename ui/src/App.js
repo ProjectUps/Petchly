@@ -22,19 +22,15 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className="App">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/book" element={
-            <Services 
-              onBookService={handleBooking}
-              showBookingForm={true}
-            />
-          } />
           <Route 
             path="/services" 
-            element={<Services onBookService={handleBooking} />}
+            element={
+              <Services onBookService={handleBooking} />
+            } 
           />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
