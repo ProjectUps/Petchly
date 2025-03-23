@@ -24,7 +24,9 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/petchly')
 
 // Routes
 const bookingRoutes = require('./routes/bookings');
+const adminRoutes = require('./routes/admin');
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5001; // Changed default to 5001

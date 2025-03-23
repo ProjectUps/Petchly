@@ -1,95 +1,65 @@
-import React, { useState } from 'react';
-import BookingModal from '../components/BookingModal';
+import React from 'react';
+import ServiceCard from '../components/ServiceCard';
 
-function Services() {
-  const [selectedService, setSelectedService] = useState(null);
-
+function Services({ onBookService }) {
   const services = [
     {
       id: 1,
-      name: "Pet Grooming",
-      description: "Professional grooming services for your pet",
-      price: "$50",
-      image: "https://images.pexels.com/photos/6816860/pexels-photo-6816860.jpeg",
-      options: ["Bath & Brush", "Full Grooming", "Nail Trim", "Ear Cleaning"]
+      name: 'Basic Grooming',
+      description: 'Basic grooming service including bath, brush, and nail trim. Perfect for regular maintenance.',
+      price: 50,
+      image: 'https://images.pexels.com/photos/6816860/pexels-photo-6816860.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     },
     {
       id: 2,
-      name: "Pet Boarding",
-      description: "Safe and comfortable boarding facilities",
-      price: "$40/night",
-      image: "https://images.pexels.com/photos/7788657/pexels-photo-7788657.jpeg",
-      options: ["Day Care", "Overnight Stay", "Extended Stay", "VIP Suite"]
+      name: 'Full Grooming',
+      description: 'Complete grooming service including bath, haircut, brush, and nail trim. Best for a fresh new look.',
+      price: 80,
+      image: 'https://images.pexels.com/photos/5731866/pexels-photo-5731866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     },
     {
       id: 3,
-      name: "Veterinary Care",
-      description: "Regular check-ups and medical care",
-      price: "From $75",
-      image: "https://images.pexels.com/photos/6235233/pexels-photo-6235233.jpeg",
-      options: ["Check-up", "Vaccination", "Dental Care", "Minor Treatment"]
+      name: 'Spa Package',
+      description: 'Luxury spa treatment including massage, special shampoo, and conditioning. The ultimate pet pampering.',
+      price: 100,
+      image: 'https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
     }
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Our Services</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services.map(service => (
-          <div 
-            key={service.id}
-            className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl"
-          >
-            <div className="relative h-48">
-              <img 
-                src={service.image} 
-                alt={service.name}
-                className="w-full h-full object-cover"
-                loading="lazy"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = 'https://images.pexels.com/photos/7788009/pexels-photo-7788009.jpeg';
-                }}
-              />
-            </div>
-            <div className="p-6">
-              <h2 className="text-2xl font-semibold mb-2 text-gray-800">{service.name}</h2>
-              <p className="text-gray-600 mb-4">{service.description}</p>
-              
-              <div className="mb-4">
-                <h3 className="font-semibold text-gray-700 mb-2">Services Include:</h3>
-                <ul className="space-y-1">
-                  {service.options.map((option, index) => (
-                    <li key={index} className="text-gray-600 flex items-center">
-                      <span className="mr-2">•</span>
-                      {option}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex justify-between items-center mt-6">
-                <span className="text-2xl font-bold text-teal-600">{service.price}</span>
-                <button
-                  onClick={() => setSelectedService(service)}
-                  className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition duration-300"
-                >
-                  Book Now
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+    <div className="min-h-screen bg-[#FDF8F4]">
+      <div className="relative">
+        <div className="absolute inset-0">
+          <img
+            className="w-full h-[400px] object-cover"
+            src="https://images.pexels.com/photos/6816851/pexels-photo-6816851.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="Happy pets"
+          />
+          <div className="absolute inset-0 bg-[#2A3342] bg-opacity-50" />
+        </div>
+        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl text-center">
+            Our Services
+          </h1>
+          <p className="mt-6 text-xl text-white max-w-3xl mx-auto text-center">
+            Professional pet grooming services tailored to your pet's needs. Book your appointment today!
+          </p>
+        </div>
       </div>
 
-      {selectedService && (
-        <BookingModal
-          service={selectedService}
-          onClose={() => setSelectedService(null)}
-        />
-      )}
+      <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-y-10 gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => (
+            <ServiceCard 
+              key={service.id} 
+              service={service} 
+              onBookService={onBookService}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
-export default Services; 
+export default Services;

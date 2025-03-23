@@ -1,38 +1,29 @@
-import * as React from 'react';
+import React from 'react';
 
-function ServiceCard({ service, onBookNow }) {
+function ServiceCard({ service, onBookService }) {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
-      <img 
-        src={service.image} 
-        alt={service.name}
-        className="w-full h-48 object-cover"
-      />
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all hover:scale-105 duration-300">
+      <div className="relative">
+        <img
+          className="h-64 w-full object-cover"
+          src={service.image}
+          alt={service.name}
+        />
+        <div className="absolute top-0 right-0 m-4">
+          <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-semibold bg-[#2A3342] text-white">
+            ${service.price}
+          </span>
+        </div>
+      </div>
       <div className="p-6">
-        <h2 className="text-2xl font-semibold mb-2 text-gray-800">{service.name}</h2>
-        <p className="text-gray-600 mb-4">{service.description}</p>
-        
-        <div className="mb-4">
-          <h3 className="font-semibold text-gray-700 mb-2">Services Include:</h3>
-          <ul className="space-y-1">
-            {service.options.map((option, index) => (
-              <li key={index} className="text-gray-600 flex items-center">
-                <span className="mr-2">•</span>
-                {option}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="flex justify-between items-center mt-6">
-          <span className="text-2xl font-bold text-teal-600">{service.price}</span>
-          <button
-            onClick={() => onBookNow(service)}
-            className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition duration-300"
-          >
-            Book Now
-          </button>
-        </div>
+        <h3 className="text-2xl font-bold text-[#2A3342] mb-3">{service.name}</h3>
+        <p className="text-gray-600 mb-6 min-h-[80px]">{service.description}</p>
+        <button
+          onClick={() => onBookService(service)}
+          className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#2A3342] hover:bg-[#1F2937] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2A3342] transition-colors duration-200"
+        >
+          Book Now
+        </button>
       </div>
     </div>
   );

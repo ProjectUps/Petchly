@@ -1,23 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Services from './pages/Services';
 import Home from './pages/Home';
+import Services from './pages/Services';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import BookingModal from './components/BookingModal';
+import AdminDashboard from './components/admin/AdminDashboard';
 import ChatBot from './components/ChatBot';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
+
+  const handleBooking = (service) => {
+    setSelectedService(service);
+    setIsModalOpen(true);
+  };
+
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/book" element={<Services />} />
+          <Route path="/book" element={
+            <Services 
+              onBookService={handleBooking}
+              showBookingForm={true}
+            />
+          } />
+          <Route 
+            path="/services" 
+            element={<Services onBookService={handleBooking} />}
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
         <ToastContainer position="top-right" autoClose={3000} />
         <ChatBot />
+
+        {/* Modal at root level */}
+        <BookingModal 
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          service={selectedService}
+        />
       </div>
     </Router>
   );
