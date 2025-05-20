@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const Booking = require('../models/Booking');
+import express from 'express';
+import Booking from '../models/Booking.js';
 
+const router = express.Router();
 // Get all bookings
 router.get('/bookings', async (req, res) => {
   try {
@@ -61,4 +61,4 @@ router.get('/stats', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router; // or whatever your router variable is calle

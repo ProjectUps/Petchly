@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Function to generate unique reference number
 function generateReference() {
@@ -110,4 +110,4 @@ bookingSchema.pre('save', function(next) {
   next();
 });
 
-module.exports = mongoose.model('Booking', bookingSchema);
+export default mongoose.model('Booking', bookingSchema);

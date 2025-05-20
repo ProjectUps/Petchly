@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import Booking from '../models/Booking.js';
+
 const router = express.Router();
-const Booking = require('../models/Booking');
 
 // Create booking
 router.post('/', async (req, res) => {
@@ -126,4 +127,4 @@ async function getGroqChatCompletion(groq,userInput) {
   });
 }
 
-module.exports = router;
+export default router;
