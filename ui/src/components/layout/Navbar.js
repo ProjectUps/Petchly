@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
+import { useCart } from '../../context/CartContext';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { cart } = useCart();
+  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Services', href: '/services' },
     { name: 'Pet Hotel', href: '/hotel' },
     { name: 'Virtual Vet', href: '/virtual-vet' },
+    { name: 'Shop', href: '/shop' },
     { name: 'About', href: '/about' },
     
   ];
@@ -47,6 +51,14 @@ function Navbar() {
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-[#2A3342] hover:bg-[#1F2937] transition-colors duration-200"
             >
               Book Now
+            </Link>
+            <Link to="/cart" className="relative">
+              <FaShoppingCart className="text-xl" />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full px-2">
+                  {cartCount}
+                </span>
+              )}
             </Link>
           </div>
 
@@ -86,6 +98,20 @@ function Navbar() {
               onClick={() => setIsOpen(false)}
             >
               Book Now
+            </Link>
+          </div>
+          <div className="px-4 py-3">
+            <Link
+              to="/cart"
+              className="block text-center px-4 py-2 border border-transparent text-base font-medium rounded-full text-white bg-[#2A3342] hover:bg-[#1F2937] transition-colors duration-200"
+              onClick={() => setIsOpen(false)}
+            >
+              <FaShoppingCart className="text-xl" />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full px-2">
+                  {cartCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>
