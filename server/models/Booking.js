@@ -90,6 +90,15 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Price is required']
   },
+  numberOfNights: {
+    type: Number,
+    min: 1,
+    required: false
+  },
+  pickUpTime: {
+    type: String,
+    required: false
+  },
   createdAt: {
     type: Date,
     default: Date.now

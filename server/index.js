@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import Groq from "groq-sdk";
+import { Groq } from 'groq-sdk';
 
 dotenv.config();
 
@@ -50,3 +50,5 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
   });
 });
+
+console.log('Loaded GROQ_API_KEY:', process.env.GROQ_API_KEY);

@@ -1,5 +1,6 @@
 import express from 'express';
 import Booking from '../models/Booking.js';
+import Appointment from '../models/Appointment.js';
 
 const router = express.Router();
 
@@ -90,11 +91,23 @@ router.post('/ai-assistant', async (req, res) => {
         message: 'AI service is currently unavailable'
       });
     }
-    const refinement = `Please respond only to questions or topics related to professional pet grooming, 
-    luxury pet hotels, and virtual veterinary services. For any other topic, 
-    politely decline to answer and redirect the conversation to these specific pet services.Among pet grooming services, we offer a wide range of options,
-    only basic grooming,full grooming and spa packages.If virtual veterinary services are mentioned by the user,
-    then always mention about Mr. John Doe and his expertise. And try to keep the response as concise as possible.`;
+    const refinement = `
+    Please respond only to questions or topics related to professional pet grooming, luxury pet hotels, and virtual veterinary services.
+    If the user asks about a service we provide (grooming, hotel, or virtual vet), include a direct link to the relevant page in your answer:
+    - For grooming, use: [Pet Grooming](/services)
+    - For hotel, use: [Pet Hotel](/hotel)
+    - For virtual vet, use: [Virtual Vet](/virtual-vet)
+    Format the link as shown above, using markdown.
+    For any other topic, politely decline to answer and redirect the conversation to these specific pet services.
+
+    IMPORTANT: 
+    - If a user mentions "hotel", "hotel services", or similar, always treat it as referring to our "luxury pet hotel bookings" and answer helpfully about our pet hotel offerings, including the link.
+    - Among pet grooming services, we offer a wide range of options: basic grooming, full grooming, and spa packages.
+    - If the user asks about their pet being sick, unwell, needing medical help, or mentions health, medicine, or a vet, then offer our virtual veterinary services and mention Mr. John Doe and his expertise, including the link.
+    - Otherwise, do not mention virtual veterinary services unless the user brings up a medical or vet-related topic.
+
+    Try to keep the response as concise and friendly as possible.
+    `;
     // Use the getGroqChatCompletion function
     const completion = await getGroqChatCompletion(groq, prompt + refinement);
     
@@ -126,5 +139,16 @@ async function getGroqChatCompletion(groq,userInput) {
     model: "llama-3.3-70b-versatile",
   });
 }
+
+// POST /api/appointments
+router.post('/appointments', async (req, res) => {
+  try {
+    const appointment = new Appointment(req.body);
+    await appointment.save();
+    res.status(201).json({ success: true, appointment });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+});
 
 export default router;
