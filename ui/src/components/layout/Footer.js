@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gray-800 text-white">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -83,10 +83,12 @@ function Footer() {
                 <span className="block">Email: support@petchly.com</span>
               </li>
               <li className="text-gray-300">
-                <span className="block">Phone: (123) 456-7890</span>
+                <span className="block">Phone:+65-98578700 - Danial</span>
               </li>
               <li className="text-gray-300">
-                <span className="block">Hours: Mon-Fri 9am-6pm</span>
+                <span className="block">Hours: Monday - Friday: 9am-9pm <br />
+                Saturday - Sunday: 9am - 6pm
+                </span>
               </li>
             </ul>
           </div>

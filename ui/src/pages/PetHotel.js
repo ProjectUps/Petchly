@@ -1,11 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaPaw, FaHotel, FaWifi, FaUtensils, FaVideo, FaHeart, FaBone, FaBath, FaTemperatureLow, FaTimes } from 'react-icons/fa';
+import BookingModal from '../components/BookingModal';
 
 function PetHotel() {
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [bookingType, setBookingType] = useState('nightly');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bookingType, setBookingType] = useState('nightly');
+
+  // Add state for booking form fields
+  const [petName, setPetName] = useState('');
+  const [petType, setPetType] = useState('');
+  const [ownerName, setOwnerName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [notes, setNotes] = useState('');
+
+  // Optionally, set serviceId/serviceName based on selectedRoom
+  const serviceId = selectedRoom ? selectedRoom.id : '';
+  const serviceName = selectedRoom ? selectedRoom.name : '';
+
+  // Ref for the room types section
+  const roomTypesRef = useRef(null);
 
   const hotelFeatures = [
     {
@@ -94,57 +112,43 @@ function PetHotel() {
     }
   ];
 
+  // Open modal with selected room
   const openBookingModal = (room = null) => {
     setSelectedRoom(room);
     setIsModalOpen(true);
-    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+  };
+
+  // Scroll to room types section
+  const scrollToRoomTypes = () => {
+    if (roomTypesRef.current) {
+      roomTypesRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const closeBookingModal = () => {
     setIsModalOpen(false);
+    setSelectedRoom(null);
     document.body.style.overflow = 'unset';
+    // Reset form fields
+    setPetName('');
+    setPetType('');
+    setOwnerName('');
+    setEmail('');
+    setPhone('');
+    setDate('');
+    setTime('');
+    setNotes('');
   };
 
-  // Booking Form Component
-  const BookingForm = () => (
-    <div className="bg-white rounded-2xl shadow-xl p-8 max-w-3xl w-full">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-[#2A3342]">Book a Stay</h2>
-        <button
-          onClick={closeBookingModal}
-          className="text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          <FaTimes className="w-6 h-6" />
-        </button>
-      </div>
-      
-      <form className="space-y-6">
-        {/* ... Previous form fields stay the same ... */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Booking Type</label>
-            <select 
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#2A3342] focus:ring-[#2A3342]"
-              value={bookingType}
-              onChange={(e) => setBookingType(e.target.value)}
-            >
-              <option value="nightly">Nightly Stay</option>
-              <option value="hourly">Hourly Care</option>
-            </select>
-          </div>
-          
-          {/* ... Rest of the form fields stay the same ... */}
-        </div>
-        
-        <button
-          type="submit"
-          className="w-full bg-[#2A3342] text-white py-3 rounded-full hover:bg-[#1F2937] transition-colors duration-300"
-        >
-          Book Now
-        </button>
-      </form>
-    </div>
-  );
+  // Map selectedRoom to the service prop expected by BookingModal
+  const mappedService = selectedRoom
+    ? {
+        id: selectedRoom.id,
+        name: selectedRoom.name,
+        price: bookingType === 'hourly' ? selectedRoom.hourlyPrice : selectedRoom.nightPrice,
+      }
+    : null;
 
   return (
     <div className="min-h-screen bg-white pt-16">
@@ -168,7 +172,7 @@ function PetHotel() {
             </p>
             <div className="mt-10">
               <button
-                onClick={() => openBookingModal()}
+                onClick={scrollToRoomTypes}
                 className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#2A3342] hover:bg-[#1F2937] transition-colors duration-300 shadow-lg hover:shadow-xl"
               >
                 Book Now
@@ -203,7 +207,7 @@ function PetHotel() {
       </div>
 
       {/* Room Types Section */}
-      <div className="py-24 bg-white">
+      <div className="py-24 bg-white" ref={roomTypesRef}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-[#2A3342]">Luxury Accommodations</h2>
@@ -257,14 +261,13 @@ function PetHotel() {
         </div>
       </div>
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4">
-          <div className="animate-modal-appear">
-            <BookingForm />
-          </div>
-        </div>
-      )}
+      {/* Booking Modal */}
+      <BookingModal
+        isOpen={isModalOpen}
+        onClose={closeBookingModal}
+        service={mappedService}
+        hotelMode={true}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from './Modal';
 import { toast } from 'react-toastify';
 
-function BookingModal({ isOpen, onClose, service }) {
+function BookingModal({ isOpen, onClose, service, hotelMode }) {
   const [formData, setFormData] = useState({
     petName: '',
     petType: '',
@@ -13,8 +13,23 @@ function BookingModal({ isOpen, onClose, service }) {
     time: '',
     notes: ''
   });
+  const [numberOfNights, setNumberOfNights] = useState(1);
+  const [pickUpTime, setPickUpTime] = useState('');
 
   const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 9; hour <= 21; hour++) {
+      for (let minute of ['00', '30']) {
+        if (hour === 21 && minute === '30') continue;
+        const formattedHour = hour.toString().padStart(2, '0');
+        slots.push(`${formattedHour}:${minute}`);
+      }
+    }
+    return slots;
+  };
+
+  // Generate 30-min interval time slots from 09:00 to 21:00
+  const generatePickUpTimeSlots = () => {
     const slots = [];
     for (let hour = 9; hour <= 21; hour++) {
       for (let minute of ['00', '30']) {
@@ -30,6 +45,18 @@ function BookingModal({ isOpen, onClose, service }) {
     e.preventDefault();
     
     try {
+      console.log('Submitting booking:', {
+        ...formData,
+        serviceId: service.id,
+        serviceName: service.name,
+        price: service.price,
+        status: 'pending',
+        ...(hotelMode ? { 
+            numberOfNights: Number(numberOfNights), 
+            pickUpTime 
+          } : {})
+      });
+
       const response = await fetch('http://localhost:5001/api/bookings', {
         method: 'POST',
         headers: {
@@ -40,7 +67,11 @@ function BookingModal({ isOpen, onClose, service }) {
           serviceId: service.id,
           serviceName: service.name,
           price: service.price,
-          status: 'pending'
+          status: 'pending',
+          ...(hotelMode ? { 
+              numberOfNights: Number(numberOfNights), 
+              pickUpTime 
+            } : {})
         }),
       });
 
@@ -58,6 +89,8 @@ function BookingModal({ isOpen, onClose, service }) {
           time: '',
           notes: ''
         });
+        setNumberOfNights(1);
+        setPickUpTime('');
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || 'Failed to create booking');
@@ -180,9 +213,11 @@ function BookingModal({ isOpen, onClose, service }) {
                   <option key={time} value={time}>{time}</option>
                 ))}
               </select>
-              <p className="mt-2 text-sm text-gray-500">
-                Operating hours: 9:00 AM - 9:00 PM
-              </p>
+              {!hotelMode && (
+                <p className="mt-2 text-sm text-gray-500">
+                  Operating hours: 9:00 AM - 9:00 PM
+                </p>
+              )}
             </div>
           </div>
 
@@ -198,6 +233,41 @@ function BookingModal({ isOpen, onClose, service }) {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#2A3342] focus:border-[#2A3342]"
             />
           </div>
+
+          {hotelMode && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Number of Nights <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                min={1}
+                value={numberOfNights}
+                onChange={e => setNumberOfNights(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#2A3342] focus:border-[#2A3342]"
+                required
+              />
+            </div>
+          )}
+
+          {hotelMode && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Pick Up Time <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={pickUpTime}
+                onChange={e => setPickUpTime(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#2A3342] focus:border-[#2A3342]"
+                required
+              >
+                <option value="">Select a pick up time</option>
+                {generatePickUpTimeSlots().map((time) => (
+                  <option key={time} value={time}>{time}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Submit Buttons */}
           <div className="flex justify-end space-x-3 pt-6">

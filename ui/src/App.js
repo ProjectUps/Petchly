@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import About from './pages/About';
@@ -12,6 +13,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PetHotel from './pages/PetHotel';
 import VideoConference from './pages/VideoConference';
+import RequireAuth from './components/RequireAuth';
+import Login from './pages/Login';
+import BookVetAppointment from './pages/BookVetAppointment';
 //import IframeComponent from './pages/iframe'; // Import the IframeComponent
 
 function App() {
@@ -25,36 +29,40 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/hotel" element={<PetHotel />} />
-          <Route path="/book" element={
-            <Services 
-              onBookService={handleBooking}
-              showBookingForm={true}
-            />
-          } />
-          <Route 
-            path="/services" 
-            element={<Services onBookService={handleBooking} />}
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/hotel" element={<PetHotel />} />
+        <Route path="/book" element={
+          <Services 
+            onBookService={handleBooking}
+            showBookingForm={true}
           />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/virtual-vet" element={<VideoConference/>} />
-        </Routes>
-        <ToastContainer position="top-right" autoClose={3000} />
-        <ChatBot />
-
-        {/* Modal at root level */}
-        <BookingModal 
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          service={selectedService}
+        } />
+        <Route 
+          path="/services" 
+          element={<Services onBookService={handleBooking} />}
         />
-      </div>
+        <Route path="/about" element={<About />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/virtual-vet" element={<VideoConference />} />
+        <Route path="/book-vet-appointment" element={
+          <RequireAuth>
+            <BookVetAppointment />
+          </RequireAuth>
+        } />
+      </Routes>
+      <Footer />
+      <ToastContainer position="top-right" autoClose={3000} />
+      <ChatBot />
+
+      {/* Modal at root level */}
+      <BookingModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        service={selectedService}
+      />
     </Router>
   );
 }

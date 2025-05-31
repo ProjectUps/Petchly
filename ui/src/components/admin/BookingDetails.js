@@ -1,11 +1,21 @@
 import React from 'react';
 import StatusUpdate from './StatusUpdate';
 
+const hotelRoomNames = ["Cozy Den", "Deluxe Suite", "Royal Palace"];
+const isHotelBooking = (booking) =>
+  booking.numberOfNights || hotelRoomNames.includes(booking.serviceName);
+
 function BookingDetails({ booking, onStatusUpdate }) {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="px-4 py-5 sm:px-6">
         <h3 className="text-lg font-medium text-gray-900">Booking Details</h3>
+        <div className="mb-4">
+          {isHotelBooking(booking)
+            ? <span className="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">Hotel Booking</span>
+            : <span className="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">Service Booking</span>
+          }
+        </div>
       </div>
       <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
         <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
@@ -48,6 +58,18 @@ function BookingDetails({ booking, onStatusUpdate }) {
             <dt className="text-sm font-medium text-gray-500">Time</dt>
             <dd className="mt-1 text-sm text-gray-900">{booking.time}</dd>
           </div>
+          {isHotelBooking(booking) && (
+            <>
+              <div>
+                <dt className="text-sm font-medium text-gray-500">Number of Nights</dt>
+                <dd className="mt-1 text-sm text-gray-900">{booking.numberOfNights || 'N/A'}</dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-gray-500">Pick Up Time</dt>
+                <dd className="mt-1 text-sm text-gray-900">{booking.pickUpTime || 'N/A'}</dd>
+              </div>
+            </>
+          )}
           <div className="sm:col-span-2">
             <dt className="text-sm font-medium text-gray-500">Owner Details</dt>
             <dd className="mt-1 text-sm text-gray-900">

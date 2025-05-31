@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaPaw, FaHotel, FaHeart, FaClock, FaCheckCircle, FaPhone, FaStethoscope } from 'react-icons/fa';
+import Footer from '../components/layout/Footer';
+import Testimonials from '../components/sections/Testimonials';
 
 function Home() {
   const features = [
@@ -14,7 +16,7 @@ function Home() {
     {
       title: "Luxury Pet Hotel",
       description: "Comfortable stays with 24/7 care and premium amenities",
-      image: "https://unsplash.com/photos/brown-dog-lying-on-bed-with-bottle-of-s-pellegrino-sparkling-water-ey5s8rNHG-c",
+      image: "https://www.k9resorts.com/images/portfolio/39214/CherryHill-Interior.jpg",
       link: "/hotel",
       icon: <FaHotel className="text-white" />
     },
@@ -150,37 +152,8 @@ function Home() {
         </div>
       </div>
 
-      {/* Contact Section */}
-      <div className="bg-[#2A3342] py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <div className="p-8 md:p-12 bg-[#FDF8F4]">
-                <h2 className="text-3xl font-bold text-[#2A3342] mb-4">Contact Us</h2>
-                <p className="text-gray-600 mb-6">Have questions? We're here to help!</p>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <FaPhone className="text-[#2A3342]" />
-                    <span className="text-gray-600">+1 (555) 123-4567</span>
-                  </div>
-                  <p className="text-gray-600">
-                    Opening Hours:<br />
-                    Monday - Friday: 8am - 8pm<br />
-                    Saturday - Sunday: 9am - 6pm
-                  </p>
-                </div>
-              </div>
-              <div className="relative h-64 md:h-auto">
-                <img
-                  className="absolute inset-0 h-full w-full object-cover"
-                  src="https://images.pexels.com/photos/7469277/pexels-photo-7469277.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="Contact"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Testimonials Section */}
+      <Testimonials />
 
       {/* CTA Section */}
       <div className="bg-[#FDF8F4] py-24">
@@ -197,6 +170,7 @@ function Home() {
           </Link>
         </div>
       </div>
+     
     </div>
   );
 }

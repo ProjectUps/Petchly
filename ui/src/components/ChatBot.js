@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { bookingService } from '../services/api';
 
 function ChatBot() {
@@ -7,6 +7,12 @@ function ChatBot() {
     { id: 1, text: "Hello! Welcome to Petchly. How can I assist you today?", isBot: true }
   ]);
   const [inputText, setInputText] = useState('');
+  const endOfMessagesRef = useRef(null);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,6 +83,8 @@ function ChatBot() {
                 </div>
               </div>
             ))}
+            {/* This div is always at the end */}
+            <div ref={endOfMessagesRef} />
           </div>
 
           {/* Input Form */}

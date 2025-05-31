@@ -1,95 +1,97 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const navigation = [
+    { name: 'Home', href: '/' },
+    { name: 'Services', href: '/services' },
+    { name: 'Pet Hotel', href: '/hotel' },
+    { name: 'Virtual Vet', href: '/virtual-vet' },
+    { name: 'About', href: '/about' },
+    
+  ];
+
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-white shadow-lg fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-blue-600">
-              Petchly
+            <Link to="/" className="flex-shrink-0 flex items-center">
+              <span className="text-2xl font-bold text-[#2A3342]">Petchly</span>
             </Link>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            <Link to="/services" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-              Services
-            </Link>
-            <Link to="/shop" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-              Shop
-            </Link>
-            <Link to="/virtual-vet" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
-              Virtual Vet
-            </Link>
-            <Link to="/login" className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium">
-              Login
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center md:space-x-8">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 transition-colors duration-200 ${
+                  isActive(item.href)
+                    ? 'border-[#2A3342] text-[#2A3342]'
+                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-[#2A3342]'
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
+            <Link
+              to="/services"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-[#2A3342] hover:bg-[#1F2937] transition-colors duration-200"
+            >
+              Book Now
             </Link>
           </div>
 
           {/* Mobile menu button */}
-          <div className="sm:hidden flex items-center">
+          <div className="md:hidden flex items-center">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-blue-600 p-2"
-              aria-label="Toggle menu"
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-[#2A3342] hover:text-[#1F2937] focus:outline-none"
             >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              {isOpen ? <FaTimes className="h-6 w-6" /> : <FaBars className="h-6 w-6" />}
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile menu */}
-      <div className={`${isMenuOpen ? 'block' : 'hidden'} sm:hidden`}>
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          <Link 
-            to="/services" 
-            className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Services
-          </Link>
-          <Link 
-            to="/shop" 
-            className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Shop
-          </Link>
-          <Link 
-            to="/virtual-vet" 
-            className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Virtual Vet
-          </Link>
-          <Link 
-            to="/login" 
-            className="block px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Login
-          </Link>
+      <div className={`${isOpen ? 'block' : 'hidden'} md:hidden bg-white`}>
+        <div className="pt-2 pb-3 space-y-1">
+          {navigation.map((item) => (
+            <Link
+              key={item.name}
+              to={item.href}
+              className={`block pl-3 pr-4 py-2 text-base font-medium border-l-4 transition-colors duration-200 ${
+                isActive(item.href)
+                  ? 'border-[#2A3342] text-[#2A3342] bg-[#FDF8F4]'
+                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-[#2A3342]'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
+          <div className="px-4 py-3">
+            <Link
+              to="/services"
+              className="block text-center px-4 py-2 border border-transparent text-base font-medium rounded-full text-white bg-[#2A3342] hover:bg-[#1F2937] transition-colors duration-200"
+              onClick={() => setIsOpen(false)}
+            >
+              Book Now
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
   );
 }
 
-export default Navbar;
+export default Navbar; 
